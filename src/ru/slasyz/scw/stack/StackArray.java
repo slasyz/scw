@@ -1,16 +1,17 @@
 package ru.slasyz.scw.stack;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.EmptyStackException;
+import java.util.LinkedList;
 
 public class StackArray<E> {
     private E[] elements;
     private int length;
 
     @SuppressWarnings("unchecked")
-    public StackArray(Class<E> clazz, int length) {
-        // Так делать можно, т.к. в push() проверяется тип добавляемого элемента
-        elements = (E[]) Array.newInstance(clazz, length);
+    public StackArray(int length) {
+        elements = (E[]) new Object[length];
     }
 
     public E pop() throws EmptyStackException {

@@ -6,7 +6,7 @@ class StackArrayTest extends GroovyTestCase {
     void setUp() {
         super.setUp()
 
-        stack = new StackArray<>(Integer.class, 10);
+        stack = new StackArray<>(10);
         stack.push(4);
         stack.push(8);
         stack.push(15);
