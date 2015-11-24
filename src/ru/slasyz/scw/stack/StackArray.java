@@ -30,7 +30,10 @@ public class StackArray<E> {
         elements[index] = el;
     }
 
-    public E peek() {
+    public E peek() throws EmptyStackException {
+        if (length == 0)
+            throw new EmptyStackException();
+
         return elements[length - 1];
     }
 
