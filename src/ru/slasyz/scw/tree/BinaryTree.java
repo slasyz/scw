@@ -18,6 +18,8 @@ public class BinaryTree<K extends Comparable<K>, V> {
         this.value = value;
     }
 
+    public K getKey() { return this.key; }
+
     public V getValue() {
         return this.value;
     }
@@ -68,77 +70,85 @@ public class BinaryTree<K extends Comparable<K>, V> {
             return right.get(key);
     }
 
-    public boolean removeInSubtree(K key, BinaryTree<K, V> subtree, SubtreeType subtreeType) {
-        if (subtree == null)
-            return false;
-
-        int cmp = key.compareTo(subtree.key);
-        if (cmp == 0) {
-            if (subtree.left == null) {
-                if (subtree.right == null) {
-                    // It has no children.
-                    if (subtreeType == SubtreeType.SUBTREE_LEFT)
-                        left = null;
-                    else
-                        right = null;
-                } else {
-                    // There is no left child only.
-                    this.left = subtree.right;
-                }
-            } else {
-                if (subtree.right == null) {
-                    // There is no right child only.
-                    this.right = subtree.left;
-                } else {
-                    // It has both children.
-                    // http://neerc.ifmo.ru/wiki/index.php?title=%D0%94%D0%B5%D1%80%D0%B5%D0%B2%D0%BE_%D0%BF%D0%BE%D0%B8%D1%81%D0%BA%D0%B0,_%D0%BD%D0%B0%D0%B8%D0%B2%D0%BD%D0%B0%D1%8F_%D1%80%D0%B5%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F
-
-                    // subtree = 3
-                    // current = 6
-                    // current.left = 4
-                    BinaryTree<K, V> current = subtree.right;
-                    if (current.left == null) {
-                        // If "six" has no "four"
-
-                        // Put "six" on "three" place.
-                        subtree.key = current.key;
-                        subtree.value = current.value;
-
-                        // Move right child of "six" to "six" place.
-                        subtree.right = current.right;
-                    } else {
-                        while (current.left.left != null)
-                            current = current.left;
-
-                        // Put "four" on "three" place.
-                        subtree.key = current.left.key;
-                        subtree.value = current.left.value;
-
-                        // Move right child of "four" to "four" place.
-                        current.left = current.left.right;
-                    }
-                }
-            }
-            return true;
-        } else
-            return subtree.remove(key);
-    }
-
     public boolean remove(K key) {
         if (this.key == null)
             return false;
 
         int cmp = key.compareTo(this.key);
         if (cmp == 0) {
-            // TODO
-            assert false;
-            return false;
+            if (left == null) {
+                if (right == null) {
+                    // It has no children.
+                    this.left = null;
+                    this.right = null;
+                    this.key = null;
+                    this.value = null;
+                } else {
+                    // There is no left child only.
+                    this.key = this.right.key;
+                    this.value = this.right.value;
+                    this.left = this.right.left;
+                    this.right = this.right.right;
+                }
+            } else {
+                if (right == null) {
+                    // There is no right child only.
+                    this.key = this.left.key;
+                    this.value = this.left.value;
+                    this.right = this.left.right;
+                    this.left = this.left.left;
+                } else {
+                    // It has both children.
+                    // http://neerc.ifmo.ru/wiki/index.php?title=%D0%94%D0%B5%D1%80%D0%B5%D0%B2%D0%BE_%D0%BF%D0%BE%D0%B8%D1%81%D0%BA%D0%B0,_%D0%BD%D0%B0%D0%B8%D0%B2%D0%BD%D0%B0%D1%8F_%D1%80%D0%B5%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F
+
+                    // this = 3
+                    // current = 6
+                    // current.left = 4
+                    BinaryTree<K, V> current = right;
+                    if (current.left == null) {
+                        // If "six" has no "four"
+
+                        // Put "six" value on "three"'s place.
+                        this.key = current.key;
+                        this.value = current.value;
+
+                        // Move right child of "six" to "six" place.
+                        this.right = current.right;
+                    } else {
+                        while (current.left.left != null)
+                            current = current.left;
+
+                        // Put "four" on "three" place.
+                        this.key = current.left.key;
+                        this.value = current.left.value;
+
+                        // Move right child of "four" to "four" place.
+                        current.left = current.left.right;
+                    }
+                }
+            }
+
+            return true;
         } else if (cmp < 0) {
+            if (left == null)
+                return false;
+
             // Search for the element in left subtree.
-            return removeInSubtree(key, left, SubtreeType.SUBTREE_LEFT);
+            if ((left.getKey() == key) && (left.getLeftSubtree() == null) && (left.getRightSubtree() == null)) {
+                left = null;
+                return true;
+            } else
+                return left.remove(key);
         } else { // if (cmp > 0)
+            if (right == null)
+                return false;
+
             // Search for the element in right subtree.
-            return removeInSubtree(key, right, SubtreeType.SUBTREE_RIGHT);
+            if ((right.getKey() == key) && (right.getLeftSubtree() == null) && (right.getRightSubtree() == null)) {
+                right = null;
+                return true;
+            } else
+                return right.remove(key);
         }
     }
 }
