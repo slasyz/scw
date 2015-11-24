@@ -1,9 +1,6 @@
 package ru.slasyz.scw.stack;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.EmptyStackException;
-import java.util.LinkedList;
 
 public class StackArray<E> {
     private E[] elements;
@@ -20,7 +17,6 @@ public class StackArray<E> {
 
         int index = length - 1;
         length--;
-        //elements = Arrays.copyOf(elements, index); // all but last element
         return elements[index];
     }
 
@@ -30,7 +26,6 @@ public class StackArray<E> {
 
         int index = length;
         length++;
-        //elements = Arrays.copyOf(elements, index+1);
 
         elements[index] = el;
     }
