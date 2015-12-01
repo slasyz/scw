@@ -7,10 +7,6 @@ public class BinaryTree<K extends Comparable<K>, V> {
     private BinaryTree<K, V> left;
     private BinaryTree<K, V> right;
 
-    public enum SubtreeType {
-        SUBTREE_LEFT, SUBTREE_RIGHT
-    }
-
     public BinaryTree() { }
 
     public BinaryTree(K key, V value) {
@@ -70,6 +66,7 @@ public class BinaryTree<K extends Comparable<K>, V> {
             return right.get(key);
     }
 
+    // Returns true if element was found, false otherwise.
     public boolean remove(K key) {
         if (this.key == null)
             return false;
@@ -84,7 +81,7 @@ public class BinaryTree<K extends Comparable<K>, V> {
                     this.key = null;
                     this.value = null;
                 } else {
-                    // There is no left child only.
+                    // There is right child only.
                     this.key = this.right.key;
                     this.value = this.right.value;
                     this.left = this.right.left;
@@ -92,7 +89,7 @@ public class BinaryTree<K extends Comparable<K>, V> {
                 }
             } else {
                 if (right == null) {
-                    // There is no right child only.
+                    // There is left child only.
                     this.key = this.left.key;
                     this.value = this.left.value;
                     this.right = this.left.right;
