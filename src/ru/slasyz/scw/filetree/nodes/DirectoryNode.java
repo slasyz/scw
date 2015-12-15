@@ -10,13 +10,13 @@ import java.util.List;
 public class DirectoryNode extends Node {
     private List<Node> children;
 
-    public DirectoryNode(String name) {
+    public DirectoryNode(Integer name) {
         super(name);
 
         children = new ArrayList<>();
     }
 
-    public boolean contains(String name) {
+    public boolean contains(Integer name) {
         try {
             getChild(name);
             return true;
@@ -25,8 +25,8 @@ public class DirectoryNode extends Node {
         }
     }
 
-    public List<String> getContent() {
-        List<String> result = new ArrayList<>();
+    public List<Integer> getContent() {
+        List<Integer> result = new ArrayList<>();
 
         for (Node child : children)
             result.add(child.getName());
@@ -38,7 +38,7 @@ public class DirectoryNode extends Node {
         return children;
     }
 
-    public Node getChild(String name) throws NotFoundException {
+    public Node getChild(Integer name) throws NotFoundException {
         for (Node child : children) {
             if (child.getName().equals(name))
                 return child;
@@ -54,15 +54,15 @@ public class DirectoryNode extends Node {
         children.add(node);
     }
 
-    public void createFile(String name) throws NodeAlreadyExists {
+    public void createFile(Integer name) throws NodeAlreadyExists {
         create(new FileNode(name));
     }
 
-    public void createDirectory(String name) throws NodeAlreadyExists {
+    public void createDirectory(Integer name) throws NodeAlreadyExists {
         create(new DirectoryNode(name));
     }
 
-    public void remove(String name) throws NotFoundException {
+    public void remove(Integer name) throws NotFoundException {
         for (Node child : children) {
             if (child.getName().equals(name))
                 children.remove(child);

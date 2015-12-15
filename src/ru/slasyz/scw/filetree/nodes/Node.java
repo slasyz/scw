@@ -1,18 +1,18 @@
 package ru.slasyz.scw.filetree.nodes;
 
 public abstract class Node {
-    private String name;
+    private Integer name;
     private DirectoryNode parent;
 
-    public Node(String name) {
+    public Node(Integer name) {
         setName(name);
     }
 
-    public String getName() {
+    public Integer getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Integer name) {
         this.name = name;
     }
 

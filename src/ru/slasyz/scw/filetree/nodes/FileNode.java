@@ -3,7 +3,7 @@ package ru.slasyz.scw.filetree.nodes;
 public class FileNode extends Node {
     private String content;
 
-    public FileNode(String name) {
+    public FileNode(Integer name) {
         super(name);
     }
 

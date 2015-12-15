@@ -1,6 +1,6 @@
 package ru.slasyz.scw.filetree
 
-import ru.slasyz.scw.filetree.FileSystem;
+import ru.slasyz.scw.filetree.FileSystem
 
 class FileSystemTest extends GroovyTestCase {
     FileSystem fs;
@@ -12,46 +12,42 @@ class FileSystemTest extends GroovyTestCase {
     }
 
     void testDirectory() {
-        fs.mkdir("home");
-        fs.chdir("home");
-        fs.mkdir("user1");
-        fs.mkdir("user2");
-        fs.chdir("user1");
+        fs.mkdir([1] as Integer[]);
+        fs.mkdir([1, 2] as Integer[]);
+        fs.mkdir([1, 3] as Integer[]);
 
-        assertEquals(2, fs.ls("/home").size())
+        assertEquals(2, fs.ls([1] as Integer[]).size())
     }
 
     void testFile() {
-        fs.mkdir("home");
-        fs.chdir("home")
-        fs.mkdir("sl");
-        fs.chdir("/home/sl");
+        fs.mkdir([1] as Integer[]);
+        fs.mkdir([1, 2] as Integer[]);
 
         def text = "blah-blah-blah";
-        fs.mkfile("test.txt");
-        fs.write("test.txt", text);
+        fs.mkfile([1, 2, 3] as Integer[]);
+        fs.write([1, 2, 3] as Integer[], text);
 
-        assertEquals(text, fs.cat("test.txt"));
+        assertEquals(text, fs.cat([1, 2, 3] as Integer[]));
     }
 
     void testFind() {
-        fs.mkdir("home");
-        fs.mkdir("home/sl");
-        fs.mkdir("home/sl/bin");
-        fs.mkdir("usr");
-        fs.mkdir("usr/bin");
+        fs.mkdir([1] as Integer[]);
+        fs.mkdir([1, 2] as Integer[]);
+        fs.mkdir([1, 2, 3] as Integer[]);
+        fs.mkdir([10] as Integer[]);
+        fs.mkdir([10, 3] as Integer[]);
 
-        assertEquals(2, fs.find("bin").size())
+        assertEquals(2, fs.find(3).size())
     }
 
     void testRm() {
-        fs.mkdir("home");
-        fs.mkdir("home/sl");
-        fs.mkdir("home/alice");
-        fs.mkdir("home/bob");
+        fs.mkdir([1] as Integer[]);
+        fs.mkdir([1, 2] as Integer[]);
+        fs.mkdir([1, 3] as Integer[]);
+        fs.mkdir([1, 4] as Integer[]);
 
-        fs.rm("home/alice");
+        fs.rm([1, 3] as Integer[]);
 
-        assertEquals(2, fs.ls("home").size());
+        assertEquals(2, fs.ls([1] as Integer[]).size());
     }
 }
