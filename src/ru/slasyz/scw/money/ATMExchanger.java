@@ -65,9 +65,24 @@ public class ATMExchanger {
         // Input data.
         Scanner in = new Scanner(System.in);
 
-        System.out.print("Введите сумму: ");
-        int sum = in.nextInt();
-        in.nextLine();
+        boolean fail = false;
+        int sum = 0;
+        try {
+            System.out.print("Введите сумму: ");
+            sum = in.nextInt();
+            in.nextLine();
+
+            if (sum <= 0)
+                fail = true;
+        } catch (InputMismatchException ex) {
+            fail = true;
+        }
+
+        // Output an error message and exit.
+        if (fail) {
+            System.out.println("Сумма должна быть целым числом больше нуля.");
+            System.exit(1);
+        }
 
         System.out.print("Введите номиналы монет через пробел: ");
         List<String> coinsString = Arrays.asList(in.nextLine().split("\\s+"));
@@ -75,7 +90,7 @@ public class ATMExchanger {
         // Put all coins to set to ensure uniqueness.
         Set<Integer> coinSet = new HashSet<>();
         for (String coin : coinsString) {
-            boolean fail = false;
+            fail = false;
             int input;
 
             try {
