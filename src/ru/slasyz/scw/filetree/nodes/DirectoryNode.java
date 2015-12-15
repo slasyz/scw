@@ -34,6 +34,10 @@ public class DirectoryNode extends Node {
         return result;
     }
 
+    public List<Node> getChildren() {
+        return children;
+    }
+
     public Node getChild(String name) throws NotFoundException {
         for (Node child : children) {
             if (child.getName().equals(name))

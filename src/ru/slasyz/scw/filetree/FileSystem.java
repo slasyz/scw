@@ -5,8 +5,7 @@ import ru.slasyz.scw.filetree.nodes.DirectoryNode;
 import ru.slasyz.scw.filetree.nodes.FileNode;
 import ru.slasyz.scw.filetree.nodes.Node;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class FileSystem {
     DirectoryNode root;
@@ -150,5 +149,22 @@ public class FileSystem {
     public void write(String strPath, String content) throws AboveRootException, NotFoundException, NotFileException {
         String[] path = strPath.split("/");
         write(path, content);
+    }
+
+    // Search for files by exact filename.
+    public List<Node> find(String name) {
+        return findFrom(name, root);
+    }
+
+    private List<Node> findFrom(String name, Node node) {
+        List<Node> result = new ArrayList<>();
+        if (name.equals(node.getName()))
+            result.add(node);
+
+        if (node instanceof DirectoryNode)
+            for (Node child : ((DirectoryNode) node).getChildren())
+                result.addAll(findFrom(name, child));
+
+        return result;
     }
 }
