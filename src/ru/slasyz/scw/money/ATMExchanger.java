@@ -2,10 +2,7 @@ package ru.slasyz.scw.money;
 
 import com.sun.deploy.util.ArrayUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ATMExchanger {
     private int[] coins;
@@ -20,6 +17,10 @@ public class ATMExchanger {
             this.coins[i] = this.coins[this.coins.length - i - 1];
             this.coins[this.coins.length - i - 1] = tmp;
         }
+    }
+
+    public int[] getCoins() {
+        return coins;
     }
 
     public List<int[]> getExchangeList(int sum) {
@@ -70,25 +71,38 @@ public class ATMExchanger {
 
         System.out.print("Введите номиналы монет через пробел: ");
         List<String> coinsString = Arrays.asList(in.nextLine().split("\\s+"));
-        int[] coinList = new int[coinsString.size()];
-        for (int i = 0; i < coinsString.size(); i++) {
+
+        // Put all coins to set to ensure uniqueness.
+        Set<Integer> coinSet = new HashSet<>();
+        for (String coin : coinsString) {
             boolean fail = false;
+            int input;
+
             try {
-                coinList[i] = Integer.parseInt(coinsString.get(i));
+                input = Integer.parseInt(coin);
+                coinSet.add(input);
+
+                // Wrong value of coin (must be natural number).
+                if (input <= 0)
+                    fail = true;
             } catch (NumberFormatException ex) {
                 // Wrong number format.
                 fail = true;
             }
-
-            // Wrong value of coin (must be natural number).
-            if (coinList[i] <= 0)
-                fail = true;
 
             // Output an error message and exit.
             if (fail) {
                 System.out.println("Номиналы монет должны быть целыми числами больше нуля.");
                 System.exit(1);
             }
+        }
+
+        // Move it to array.
+        int[] coinList = new int[coinSet.size()];
+        int i = 0;
+        for (int coin : coinSet) {
+            coinList[i] = coin;
+            i++;
         }
 
         // Start the algorithm.
@@ -99,10 +113,14 @@ public class ATMExchanger {
         System.out.println("Список разменов:");
         for (int[] exchange : exchanges) {
             for (int coin : exchange)
-                System.out.print(coin);
+                System.out.printf("%d ", coin);
             System.out.println();
         }
 
+        System.out.print("(монеты:");
+        for (int coin : exchanger.getCoins())
+            System.out.printf(" %d", coin);
+        System.out.println(")");
         System.out.printf("Всего %s разменов.", exchanges.size());
     }
 }
