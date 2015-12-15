@@ -61,20 +61,41 @@ public class ATMExchanger {
     }
 
     public static void main(String[] argv) {
+        // Input data.
         Scanner in = new Scanner(System.in);
-
-        System.out.print("Введите номиналы монет через пробел: ");
-        List<String> coinsString = Arrays.asList(in.nextLine().split("\\s+"));
-        int[] coinList = new int[coinsString.size()];
-        for (int i = 0; i < coinsString.size(); i++)
-            coinList[i] = Integer.parseInt(coinsString.get(i));
 
         System.out.print("Введите сумму: ");
         int sum = in.nextInt();
         in.nextLine();
 
+        System.out.print("Введите номиналы монет через пробел: ");
+        List<String> coinsString = Arrays.asList(in.nextLine().split("\\s+"));
+        int[] coinList = new int[coinsString.size()];
+        for (int i = 0; i < coinsString.size(); i++) {
+            boolean fail = false;
+            try {
+                coinList[i] = Integer.parseInt(coinsString.get(i));
+            } catch (NumberFormatException ex) {
+                // Wrong number format.
+                fail = true;
+            }
+
+            // Wrong value of coin (must be natural number).
+            if (coinList[i] <= 0)
+                fail = true;
+
+            // Output an error message and exit.
+            if (fail) {
+                System.out.println("Номиналы монет должны быть целыми числами больше нуля.");
+                System.exit(1);
+            }
+        }
+
+        // Start the algorithm.
         ATMExchanger exchanger = new ATMExchanger(coinList);
         List<int[]> exchanges = exchanger.getExchangeList(sum);
+
+        // Output the result.
         System.out.println("Список разменов:");
         for (int[] exchange : exchanges) {
             for (int coin : exchange)
