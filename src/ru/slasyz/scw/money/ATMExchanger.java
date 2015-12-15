@@ -5,6 +5,7 @@ import com.sun.deploy.util.ArrayUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class ATMExchanger {
     private int[] coins;
@@ -57,5 +58,30 @@ public class ATMExchanger {
             actualSum += exchange[i] * coins[i];
 
         return actualSum == sum;
+    }
+
+    public static void main(String[] argv) {
+        Scanner in = new Scanner(System.in);
+
+        System.out.print("Введите номиналы монет через пробел: ");
+        List<String> coinsString = Arrays.asList(in.nextLine().split("\\s+"));
+        int[] coinList = new int[coinsString.size()];
+        for (int i = 0; i < coinsString.size(); i++)
+            coinList[i] = Integer.parseInt(coinsString.get(i));
+
+        System.out.print("Введите сумму: ");
+        int sum = in.nextInt();
+        in.nextLine();
+
+        ATMExchanger exchanger = new ATMExchanger(coinList);
+        List<int[]> exchanges = exchanger.getExchangeList(sum);
+        System.out.println("Список разменов:");
+        for (int[] exchange : exchanges) {
+            for (int coin : exchange)
+                System.out.print(coin);
+            System.out.println();
+        }
+
+        System.out.printf("Всего %s разменов.", exchanges.size());
     }
 }
