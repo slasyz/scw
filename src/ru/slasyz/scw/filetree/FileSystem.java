@@ -167,4 +167,15 @@ public class FileSystem {
 
         return result;
     }
+
+    // Remove file.
+    public void rm(String[] path) throws AboveRootException, NotFoundException, NotDirectoryException {
+        DirectoryNode parent = getParentDirectory(path);
+        parent.remove(path[path.length - 1]);
+    }
+
+    public void rm(String strPath) throws AboveRootException, NotFoundException, NotDirectoryException {
+        String[] path = strPath.split("/");
+        rm(path);
+    }
 }

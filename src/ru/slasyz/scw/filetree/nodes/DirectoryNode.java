@@ -61,4 +61,11 @@ public class DirectoryNode extends Node {
     public void createDirectory(String name) throws NodeAlreadyExists {
         create(new DirectoryNode(name));
     }
+
+    public void remove(String name) throws NotFoundException {
+        for (Node child : children) {
+            if (child.getName().equals(name))
+                children.remove(child);
+        }
+    }
 }

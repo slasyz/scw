@@ -40,6 +40,18 @@ class FileSystemTest extends GroovyTestCase {
         fs.mkdir("home/sl/bin");
         fs.mkdir("usr");
         fs.mkdir("usr/bin");
+
         assertEquals(2, fs.find("bin").size())
+    }
+
+    void testRm() {
+        fs.mkdir("home");
+        fs.mkdir("home/sl");
+        fs.mkdir("home/alice");
+        fs.mkdir("home/bob");
+
+        fs.rm("home/alice");
+
+        assertEquals(2, fs.ls("home").size());
     }
 }
